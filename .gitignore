@@ -1,0 +1,19 @@
+# Agent working memory (not part of the library)
+CLAUDE.md
+**/CLAUDE.md
+memory/
+TASKS.md
+dashboard.html
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
