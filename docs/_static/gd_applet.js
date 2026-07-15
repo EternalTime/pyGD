@@ -17,7 +17,7 @@
     const DT = 0.0625;              // timestep, matching the library default
     const STEPS = 2;                // environment steps per frame
     const TRACE = 900;              // r(t) history length
-    const BINS = 48;                // phase histogram bins
+    const BINS = 360;               // phase histogram bins (1 degree each)
 
     /* Palette from custom.css: Crimson #8B0037, LightGray #E6E6E6, Black.
      * The slate blue is the one off-palette hue: a cyclic phase map needs a
@@ -159,6 +159,22 @@
 
     const traceR = [];
     const hist = new Float64Array(BINS);
+    const histS = new Float64Array(BINS);
+
+    /* Circular Gaussian kernel for smoothing the histogram over angle.
+     * The width is fixed in angle (sigma = 0.2 rad), independent of the
+     * bin size; with 1-degree bins the rendered silhouette is smooth. */
+    const KSIG = 0.2 / (2 * Math.PI / BINS);    // sigma in bins
+    const KHW = Math.ceil(3 * KSIG);
+    const KERN = new Float64Array(2 * KHW + 1);
+    {
+        let ksum = 0;
+        for (let k = -KHW; k <= KHW; k++) {
+            KERN[k + KHW] = Math.exp(-k * k / (2 * KSIG * KSIG));
+            ksum += KERN[k + KHW];
+        }
+        for (let k = 0; k < KERN.length; k++) KERN[k] /= ksum;
+    }
 
     function wrap(t) {
         return ((t + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
@@ -296,7 +312,7 @@
         edgeCv.width = W; edgeCv.height = H;
         const c = edgeCv.getContext('2d');
         c.clearRect(0, 0, W, H);
-        c.strokeStyle = 'rgba(230, 230, 230, 0.13)';
+        c.strokeStyle = 'rgba(230, 230, 230, 0.25)';
         c.lineWidth = 1;
         c.beginPath();
         for (let i = 0; i < N; i++) {
@@ -370,11 +386,18 @@
         for (let i = 0; i < N; i++) {
             hist[Math.min(BINS - 1, (hue(thetas[i]) * BINS) | 0)]++;
         }
-        let max = 1;
-        for (let b = 0; b < BINS; b++) if (hist[b] > max) max = hist[b];
+        for (let b = 0; b < BINS; b++) {          // smooth over angle, wrapping
+            let s = 0;
+            for (let k = -KHW; k <= KHW; k++) {
+                s += KERN[k + KHW] * hist[(b + k + BINS) % BINS];
+            }
+            histS[b] = s;
+        }
+        let max = 1e-12;
+        for (let b = 0; b < BINS; b++) if (histS[b] > max) max = histS[b];
         for (let b = 0; b < BINS; b++) {
-            if (!hist[b]) continue;
-            const rr = R * hist[b] / max;
+            if (!histS[b]) continue;
+            const rr = R * histS[b] / max;
             const a0 = (b / BINS) * 2 * Math.PI;
             const a1 = ((b + 1) / BINS) * 2 * Math.PI;
             c.fillStyle = LUT[(((b + 0.5) / BINS) * 256) & 255];
@@ -422,23 +445,23 @@
         <canvas id="gd-canvas" width="640" height="420"></canvas>
         <div id="gd-controls" class="gd-ov">
           <div class="gd-ctl" data-kinds="bare yokai cg">
-            <label for="gd-sigma">coupling \\(\\sigma\\) <span class="val" id="gd-sigma-val">0.50</span></label>
+            <label for="gd-sigma"><span>coupling \\(\\sigma\\)</span> <span class="val" id="gd-sigma-val">0.50</span></label>
             <input type="range" id="gd-sigma" min="0" max="1" step="0.005" value="0.5">
           </div>
           <div class="gd-ctl" data-kinds="yokai">
-            <label for="gd-alpha">kick strength \\(\\alpha\\) <span class="val" id="gd-alpha-val">0.50</span></label>
+            <label for="gd-alpha"><span>kick strength \\(\\alpha\\)</span> <span class="val" id="gd-alpha-val">0.50</span></label>
             <input type="range" id="gd-alpha" min="0" max="2" step="0.01" value="0.5">
           </div>
           <div class="gd-ctl" data-kinds="yokai">
-            <label for="gd-beta">hop speed \\(\\beta\\) <span class="val" id="gd-beta-val">0.16</span></label>
+            <label for="gd-beta"><span>hop speed \\(\\beta\\)</span> <span class="val" id="gd-beta-val">0.16</span></label>
             <input type="range" id="gd-beta" min="0" max="0.5" step="0.002" value="0.16">
           </div>
           <div class="gd-ctl" data-kinds="yokai">
-            <label for="gd-eta">sensor noise \\(\\eta\\) <span class="val" id="gd-eta-val">0.00</span></label>
+            <label for="gd-eta"><span>sensor noise \\(\\eta\\)</span> <span class="val" id="gd-eta-val">0.00</span></label>
             <input type="range" id="gd-eta" min="0" max="1" step="0.01" value="0">
           </div>
           <div class="gd-ctl" data-kinds="cg">
-            <label for="gd-ab">drive \\(\\alpha\\beta\\) <span class="val" id="gd-ab-val">0.080</span></label>
+            <label for="gd-ab"><span>drive \\(\\alpha\\beta\\)</span> <span class="val" id="gd-ab-val">0.080</span></label>
             <input type="range" id="gd-ab" min="0" max="0.4" step="0.002" value="0.08">
           </div>
         </div>

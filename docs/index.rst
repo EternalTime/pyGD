@@ -16,8 +16,8 @@ out. Graphs come from :mod:`networkx`; the dynamics only ever see the sparse
 adjacency matrix, so any graph networkx can build is a graph pyGD can run.
 
 The model and the information-theoretic reading of the agent are in Sowinski,
-Frank & Ghoshal, *Phys. Rev. Research* **6**, 043188 (2024), linked from the
-project page. If you're new here, start with :doc:`getting_started`, take the
+Frank & Ghoshal, *Phys. Rev. Research* **6**, 043188
+(2024)\ :footcite:`sowinski2024information`. If you're new here, start with :doc:`getting_started`, take the
 model for a spin in the :doc:`applet`, then work through whichever guide
 matches your problem. The library ports a set of
 MATLAB classes, whose interface it keeps.
@@ -49,3 +49,8 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+References
+^^^^^^^^^^
+
+.. footbibliography::
