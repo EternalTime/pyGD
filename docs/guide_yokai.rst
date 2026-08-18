@@ -89,9 +89,12 @@ scale.
 
 That last row also sits right on the integrator's limit. This graph has
 :math:`\lambda_{\max}(L) = 21.36`, so the explicit Euler step crosses its
-stability bound at ``sigma`` = 1.50 and the row's agent-free 0.996 is already
-at the edge of faithfulness. See :doc:`guide_dynamics` for the rule; a
-high-``sigma`` run can mislead you twice over.
+stability bound at ``sigma`` = 1.50 and the ``sigma = 1.5`` row has no safety
+margin left. The printed value is unaffected, though: refining ``dt`` 8x gives
+0.995549 either way, identical to six decimals. What is exhausted is the
+margin, not the accuracy, so it is pushing ``sigma`` higher here, or running
+the same ``sigma`` on a graph with a larger :math:`\lambda_{\max}`, that would
+start to degrade the number. See :doc:`guide_dynamics` for the rule.
 
 Strength and speed enter together
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
