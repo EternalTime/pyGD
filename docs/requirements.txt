@@ -1,8 +1,1 @@
-sphinx
-sphinx-rtd-theme
-sphinxcontrib-bibtex
-sphinx-copybutton
-numpy
-scipy
-networkx
-matplotlib
+-e .[docs]
