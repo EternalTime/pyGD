@@ -138,10 +138,16 @@ blind::
     yok = Yokai(0.5, 0.16, env, noise=0.5, rng=np.random.default_rng(6))
 
 Sweep ``noise`` from 0 to 1 and measure how much desynchronization survives.
-Averaged over a few seeds on the graph above, ``r`` runs roughly 0.07, 0.03,
-0.49, 0.87, 0.91 as :math:`\eta` takes 0, 0.25, 0.5, 0.75, 1. The agent keeps
-its grip while its measurement is roughly right, then loses it entirely once
-the read is worthless — and the kicks never changed size, only their aim.
+Averaged over eight runs on the graph above, seeded as the pair just shown and
+then continued (environment ``default_rng(k)``, agent ``default_rng(k+1)``, for
+odd ``k`` from 5 to 19), ``r`` runs 0.06, 0.05, 0.39, 0.88, 0.91 as
+:math:`\eta` takes 0, 0.25, 0.5, 0.75, 1. Read the middle entry as a marker
+rather than a value: :math:`\eta = 0.5` is the transition itself, where five of
+the eight runs land below 0.2 and the other three above 0.78, none of them near
+their own average. The mean there is a mixing ratio and moves with the seeds
+you pick. Either side of it the outcome is sharp. The agent keeps its grip
+while its measurement is roughly right, then loses it entirely once the read is
+worthless — and the kicks never changed size, only their aim.
 
 Whether the agent's information is worth anything — whether corrupting it costs
 the agent its grip — turns out to depend on the graph, and that dependence is

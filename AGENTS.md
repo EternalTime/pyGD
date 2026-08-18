@@ -10,37 +10,34 @@ with `pip install -e ".[test,docs]"` before running `pytest` or `sphinx-build -b
 
 ## Explicit Euler: `dt * sigma * lambda_max(L)` must stay below ~2
 
-`Kuramoto.evolve` is an explicit Euler step with a default `dt = 1/16`. Linearized
-about a locked state it is `theta <- (I - dt*sigma*L) theta`, so it is stable only
-while `dt * sigma * lambda_max(L) <~ 2`, where `lambda_max(L)` is the largest
-graph-Laplacian eigenvalue; past that the stiffest modes overshoot every step and
-drive `r` *down*, an artifact that looks like real partial locking. `k_max` is only a
-proxy (`k_max + 1 <= lambda_max <= 2*k_max`), so a `k_max`-based rule is optimistic by
-up to 2x on near-regular or bipartite graphs. On the docs' N=500, p=0.02, seed=0 graph
-`k_max = 19` but `lambda_max = 21.89`, putting the crossing at sigma=1.46, not 1.68.
-It is a warning threshold, not a cliff: the default `dt` is exact at sigma=1.0, off by
-0.0006 at 1.5 (just past the crossing), and badly wrong by sigma=2.0 (r = 0.9415 vs
-0.9972 converged). Sanity-check any new coupling against a run with `dt` refined 8x.
+`Kuramoto.evolve` is an explicit Euler step with a default `dt = 1/16`, so the coupling
+you may ask for is bounded: past `dt * sigma * lambda_max(L) ~ 2`, where `lambda_max(L)`
+is the largest graph-Laplacian eigenvalue, the stiffest modes overshoot every step and
+drive `r` *down*, an artifact that looks like real partial locking. `k_max` is only an
+optimistic proxy for `lambda_max(L)`. Sanity-check any new coupling against a run with
+`dt` refined 8x. The derivation, the proxy bounds, and the measured error per `sigma`
+belong to `docs/guide_dynamics.rst` ("How far you can push the coupling") - re-measure
+and update them there, not here.
 
 ## The documented demonstration regime
 
-`sigma=0.5, strength=0.5, beta=0.16` is the regime where the Yokai visibly wins
-(`r` ~0.95 without the agent, ~0.05 with it). These are also the applet's defaults in
-`docs/_static/gd_applet.js` — keep the docs and the applet on the same regime. The
-agent's authority scales as kick rate (`strength * speed / dt`) over `sigma * <k>`, so
-it loses its grip as coupling rises: by sigma=1.5 it barely moves `r`.
+`sigma=0.5, strength=0.5, beta=0.16` is the regime where the Yokai visibly wins, and it
+is also the applet's defaults in `docs/_static/gd_applet.js` - keep the README quick
+start, `docs/guide_yokai.rst`, and the applet on the same regime. The agent's authority
+is its kick rate (`strength * speed / dt`) against the coupling's pull (`sigma * <k>`),
+so it loses its grip as coupling rises; `docs/guide_yokai.rst` ("Where the agent has
+authority") owns that sweep.
 
-`tests/test_slice.py` asserts both facts (the agent lowers `r`, and the default `dt` is
-faithful there), so doc numbers cannot silently rot. Re-measure and update the docs if
-those tests change.
+`tests/test_slice.py` asserts both doc claims - that the agent lowers `r` in this regime,
+and that the default `dt` is faithful there - so the doc numbers cannot silently rot.
 
 ## Driving the agent
 
 There is no agent-aware `run()`. The supported pattern is the hand-rolled loop
 (`yok.evolve(env)` then `env.evolve()`), as shown in `Yokai`'s docstring. Comparisons
-between an agent-free and an agent-driven run must seed the environment identically —
-reusing one `Generator` across both runs gives them different initial phases, worth
-~±0.008 in final `r`, enough to swamp a small effect.
+between an agent-free and an agent-driven run must seed the environment identically and
+give the agent a `Generator` of its own - reusing one across both runs gives them
+different initial phases, a difference large enough to swamp a small effect.
 
 ## Maintaining this file
 

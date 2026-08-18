@@ -61,11 +61,11 @@ The numbers below come from ``nx.erdos_renyi_graph(500, 0.02, seed=0)`` with
 seeded ``np.random.default_rng(0)``, a different and sparser graph from this
 page's running example above. It has :math:`k_{\max} = 19` but
 :math:`\lambda_{\max}(L) = 21.89`, so the bound is crossed at
-:math:`\sigma = 1.46` rather than the :math:`\sigma = 1.68` a degree-only rule
-would promise. Each row is 600 steps at the default ``dt = 1/16`` against 4800
-steps at ``dt = 1/128``, both averaged over the same physical window
-:math:`t \in [31.25, 37.5]`, the last 100 coarse steps and the last 800 fine
-ones:
+:math:`\sigma = 1.46` rather than the :math:`\sigma = 1.68` you get by putting
+:math:`k_{\max}` itself in place of the eigenvalue. Each row is 600 steps at
+the default ``dt = 1/16`` against 4800 steps at ``dt = 1/128``, both averaged
+over the same physical window :math:`t \in [31.25, 37.5]`, the last 100 coarse
+steps and the last 800 fine ones:
 
 .. list-table::
    :header-rows: 1
