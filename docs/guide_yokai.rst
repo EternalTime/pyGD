@@ -74,17 +74,24 @@ a seed average, so any row reproduces exactly:
      - 0.983
 
 The ``sigma = 0.5`` row is exactly the run printed above. Losing grip is not a
-gradual decline: on this graph the agent pins ``r`` near 0.02 all the way to
-``sigma = 0.5`` and then fails between 0.5 and 0.8, where ``r`` jumps from
-0.024 to 0.916.
+gradual decline: the agent holds ``r`` below about 0.1 for every ``sigma`` up
+to 0.5, mostly between 0.01 and 0.03 but rising to 0.099 at ``sigma = 0.45``,
+and then fails between 0.5 and 0.8, where ``r`` jumps from 0.024 to 0.916.
 
-By ``sigma = 1.5`` a single agent kicking one node at a time simply cannot
-keep up with 500 oscillators pulling on each other, and the effect shrinks into
-the run-to-run scatter. If you want a visible effect at higher coupling, raise
-``beta`` (more hops per step) rather than expecting the default agent to scale.
-Note also that the explicit Euler step stops being faithful before ``sigma``
-gets very large — see :doc:`guide_dynamics` — so a high-``sigma`` run can
-mislead you twice over.
+By ``sigma = 1.5`` a single agent kicking one node at a time simply cannot keep
+up with 500 oscillators pulling on each other: it removes only one to two
+percent of the order parameter, a gap of 0.012 to 0.019 across four seed pairs.
+That is small but perfectly reproducible rather than lost in noise, since the
+agent-free run locks at 0.9955 for every seed and leaves no run-to-run scatter
+for the effect to hide in. If you want a visible effect at higher coupling,
+raise ``beta`` (more hops per step) rather than expecting the default agent to
+scale.
+
+That last row also sits right on the integrator's limit. This graph has
+:math:`\lambda_{\max}(L) = 21.36`, so the explicit Euler step crosses its
+stability bound at ``sigma`` = 1.50 and the row's agent-free 0.996 is already
+at the edge of faithfulness. See :doc:`guide_dynamics` for the rule; a
+high-``sigma`` run can mislead you twice over.
 
 Strength and speed enter together
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

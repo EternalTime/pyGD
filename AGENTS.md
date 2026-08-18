@@ -19,7 +19,7 @@ proxy (`k_max + 1 <= lambda_max <= 2*k_max`), so a `k_max`-based rule is optimis
 up to 2x on near-regular or bipartite graphs. On the docs' N=500, p=0.02, seed=0 graph
 `k_max = 19` but `lambda_max = 21.89`, putting the crossing at sigma=1.46, not 1.68.
 It is a warning threshold, not a cliff: the default `dt` is exact at sigma=1.0, off by
-0.0007 at 1.5 (just past the crossing), and badly wrong by sigma=2.0 (r = 0.9415 vs
+0.0006 at 1.5 (just past the crossing), and badly wrong by sigma=2.0 (r = 0.9415 vs
 0.9972 converged). Sanity-check any new coupling against a run with `dt` refined 8x.
 
 ## The documented demonstration regime

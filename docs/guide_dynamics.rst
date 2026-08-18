@@ -88,7 +88,7 @@ ones:
      - 0.9972
 
 The bound is a warning threshold, not a cliff. ``sigma = 1.5`` already sits
-just past it at 2.05 and the error is still only 0.0007; the error becomes
+just past it at 2.05 and the error is still only 0.0006; the error becomes
 visible just after the crossing and then grows fast, reaching 0.056 by
 ``sigma = 2.0``.
 
