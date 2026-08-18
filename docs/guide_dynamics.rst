@@ -34,36 +34,65 @@ quantities you measure::
 How far you can push the coupling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The update is explicit Euler, so ``dt`` is not a free parameter: the stiffest
-term in the equation is :math:`\sigma k_{\max}`, and the step stays faithful
-only while :math:`\sigma\,k_{\max}\,dt` stays below roughly 2. Past that the
-high-degree nodes overshoot every step and ``r`` starts to *fall* as you raise
-the coupling — a numerical artifact that looks exactly like physics.
+The update is explicit Euler, so ``dt`` is not a free parameter. Linearize the
+step about a phase-locked state and the coupling term becomes the graph
+Laplacian :math:`L`, giving :math:`\theta_{n+1} = (I - dt\,\sigma L)\,\theta_n`,
+so the step is stable only while
 
-On an :math:`N = 500`, :math:`p = 0.02` graph (:math:`k_{\max} = 19`) at the
-default ``dt = 1/16``, comparing against a run with ``dt`` refined 8x:
+.. math::
+
+   dt\,\sigma\,\lambda_{\max}(L) \lesssim 2,
+
+where :math:`\lambda_{\max}(L)` is the largest Laplacian eigenvalue. Past that
+the stiffest modes overshoot every step and ``r`` starts to *fall* as you raise
+the coupling, a numerical artifact that looks exactly like physics.
+
+The maximum degree is only a proxy for that eigenvalue:
+:math:`k_{\max} + 1 \le \lambda_{\max}(L) \le 2 k_{\max}`. On an Erdős–Rényi
+graph :math:`\lambda_{\max}` sits near the lower end, but on a near-regular or
+bipartite graph it approaches :math:`2 k_{\max}`, where a rule written in terms
+of :math:`k_{\max}` alone is optimistic by up to a factor of two. Compute the
+eigenvalue when the margin matters::
+
+    lam_max = np.linalg.eigvalsh(nx.laplacian_matrix(G).toarray())[-1]
+
+The numbers below come from ``nx.erdos_renyi_graph(500, 0.02, seed=0)`` with
+``omegas = np.random.default_rng(0).standard_normal(500)`` and the environment
+seeded ``np.random.default_rng(0)``, a different and sparser graph from this
+page's running example above. It has :math:`k_{\max} = 19` but
+:math:`\lambda_{\max}(L) = 21.89`, so the bound is crossed at
+:math:`\sigma = 1.46` rather than the :math:`\sigma = 1.68` a degree-only rule
+would promise. Each row is 600 steps at the default ``dt = 1/16`` against 4800
+steps at ``dt = 1/128``, both averaged over the same physical window
+:math:`t \in [31.25, 37.5]`, the last 100 coarse steps and the last 800 fine
+ones:
 
 .. list-table::
    :header-rows: 1
 
    * - ``sigma``
-     - :math:`\sigma k_{\max} dt`
+     - :math:`\sigma \lambda_{\max}(L)\, dt`
      - ``r`` at ``dt = 1/16``
      - ``r`` converged
    * - 1.0
-     - 1.19
+     - 1.37
      - 0.9887
      - 0.9887
    * - 1.5
-     - 1.78
+     - 2.05
      - 0.9944
      - 0.9951
    * - 2.0
-     - 2.38
-     - 0.9410
+     - 2.74
+     - 0.9415
      - 0.9972
 
-The last row is the trap: ``r = 0.94`` looks like a plausible partially-locked
+The bound is a warning threshold, not a cliff. ``sigma = 1.5`` already sits
+just past it at 2.05 and the error is still only 0.0007; the error becomes
+visible just after the crossing and then grows fast, reaching 0.056 by
+``sigma = 2.0``.
+
+That last row is the trap: ``r = 0.94`` looks like a plausible partially-locked
 state, but the true answer is 0.997 and the missing 0.06 is integration error.
 If you need a larger ``sigma``, shrink ``dt`` to match — and remember that
 ``Yokai``'s ``speed`` is defined per environment step, so halving ``dt`` also

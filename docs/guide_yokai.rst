@@ -46,8 +46,10 @@ Where the agent has authority
 That balance is a real contest, not a foregone conclusion. The agent injects
 phase at a rate set by ``strength * speed / dt``; the coupling pulls back at a
 rate set by ``sigma`` times the mean degree. Raise ``sigma`` at fixed agent
-settings and the agent loses its grip — on the graph above, with
-``strength=0.5, beta=0.16``:
+settings and the agent loses its grip. Sweeping ``sigma`` on the graph above at
+``strength=0.5, beta=0.16``, each row a single 600-step run at this page's own
+seeding (environment ``default_rng(0)``, agent ``default_rng(1)``) rather than
+a seed average, so any row reproduces exactly:
 
 .. list-table::
    :header-rows: 1
@@ -56,20 +58,25 @@ settings and the agent loses its grip — on the graph above, with
      - agent-free ``r``
      - with agent ``r``
    * - 0.3
-     - 0.832
-     - 0.034
+     - 0.849
+     - 0.027
    * - 0.5
-     - 0.949
-     - 0.050
+     - 0.954
+     - 0.024
    * - 0.8
-     - 0.982
-     - 0.631
+     - 0.984
+     - 0.916
    * - 1.0
-     - 0.989
-     - 0.948
+     - 0.990
+     - 0.955
    * - 1.5
-     - 0.994
-     - 0.980
+     - 0.996
+     - 0.983
+
+The ``sigma = 0.5`` row is exactly the run printed above. Losing grip is not a
+gradual decline: on this graph the agent pins ``r`` near 0.02 all the way to
+``sigma = 0.5`` and then fails between 0.5 and 0.8, where ``r`` jumps from
+0.024 to 0.916.
 
 By ``sigma = 1.5`` a single agent kicking one node at a time simply cannot
 keep up with 500 oscillators pulling on each other, and the effect shrinks into
