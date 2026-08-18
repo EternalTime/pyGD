@@ -31,7 +31,8 @@ refreshes the collective quantities::
 Writing :math:`Z = r\,e^{i\phi}` for the population average of
 :math:`e^{i\theta}`, the magnitude :math:`r` measures how tightly the phases
 bunch and :math:`\phi` the mean phase they bunch around. Both live on the
-object as ``env.r``, ``env.phi``, and ``env.Z``.
+object as ``env.r``, ``env.phi``, and ``env.Z`` once ``update_order_parameter``
+has run.
 
 How far you can push the coupling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -134,7 +135,7 @@ The coarse-grained limit
 folded in. Rather than simulate a demon hopping and kicking, it adds the two
 terms the demon leaves behind in the continuum limit - a degree-weighted shift
 of the natural frequencies and a Wiener fluctuation whose amplitude grows with
-degree, so hubs sit in hotter baths than leaves. The agent's two parameters
+degree - so hubs sit in hotter baths than leaves. The agent's two parameters
 survive only through their product ``ab`` :math:`= \alpha\beta`::
 
     from pyGD import KuramotoCG
