@@ -99,4 +99,4 @@ pytest
 
 ## License
 
-MIT
+MIT - see [LICENSE](LICENSE).
