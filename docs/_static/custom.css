@@ -1,0 +1,30 @@
+/* pyGD color scheme: Crimson Red masthead, black nav, light-gray text.
+   Crimson #8B0037   LightGray #E6E6E6   Black #000000
+   Overrides the sphinx_rtd_theme defaults (#2980B9 blue). */
+
+.wy-side-nav-search,
+.wy-nav-top {
+    background: #8B0037;   /* Crimson Red — masthead */
+}
+
+.wy-side-nav-search input[type=text] {
+    border-color: #E6E6E6;
+}
+
+.wy-nav-side {
+    background: #000000;   /* Black — nav */
+}
+
+.wy-menu-vertical p.caption {
+    color: #E6E6E6;        /* Light Gray */
+}
+
+/* Lighter menu text for readability on the black nav.
+   Current section sits on a light panel, so keep it dark. */
+.wy-menu-vertical a {
+    color: #E6E6E6;
+}
+
+.wy-menu-vertical li.current a {
+    color: #404040;
+}
