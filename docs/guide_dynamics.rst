@@ -26,10 +26,10 @@ quantities you measure::
     G = nx.erdos_renyi_graph(400, 0.03, seed=1)
     omegas = rng.standard_normal(G.number_of_nodes())
 
-    env = Kuramoto(sigma=1.5, G=G, omegas=omegas, rng=rng)
+    env = Kuramoto(sigma=1.0, G=G, omegas=omegas, rng=rng)
     env.run(500)                 # transient, unmeasured
     r_hist = env.run(200, record=True)
-    print(r_hist.mean())
+    print(r_hist.mean())         # 0.9958
 
 How far you can push the coupling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -117,7 +117,7 @@ climbs toward one\ :footcite:`strogatz2000,acebron2005`. Sweep the coupling and 
     from pyGD import Kuramoto
 
     G = nx.erdos_renyi_graph(400, 0.05, seed=2)
-    sigmas = np.linspace(0, 1.0, 24)
+    sigmas = np.linspace(0, 0.8, 24)
 
     curve = []
     for sigma in sigmas:
