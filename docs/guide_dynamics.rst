@@ -31,6 +31,44 @@ quantities you measure::
     r_hist = env.run(200, record=True)
     print(r_hist.mean())
 
+How far you can push the coupling
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The update is explicit Euler, so ``dt`` is not a free parameter: the stiffest
+term in the equation is :math:`\sigma k_{\max}`, and the step stays faithful
+only while :math:`\sigma\,k_{\max}\,dt` stays below roughly 2. Past that the
+high-degree nodes overshoot every step and ``r`` starts to *fall* as you raise
+the coupling — a numerical artifact that looks exactly like physics.
+
+On an :math:`N = 500`, :math:`p = 0.02` graph (:math:`k_{\max} = 19`) at the
+default ``dt = 1/16``, comparing against a run with ``dt`` refined 8x:
+
+.. list-table::
+   :header-rows: 1
+
+   * - ``sigma``
+     - :math:`\sigma k_{\max} dt`
+     - ``r`` at ``dt = 1/16``
+     - ``r`` converged
+   * - 1.0
+     - 1.19
+     - 0.9887
+     - 0.9887
+   * - 1.5
+     - 1.78
+     - 0.9944
+     - 0.9951
+   * - 2.0
+     - 2.38
+     - 0.9410
+     - 0.9972
+
+The last row is the trap: ``r = 0.94`` looks like a plausible partially-locked
+state, but the true answer is 0.997 and the missing 0.06 is integration error.
+If you need a larger ``sigma``, shrink ``dt`` to match — and remember that
+``Yokai``'s ``speed`` is defined per environment step, so halving ``dt`` also
+doubles how fast the agent hops in physical time.
+
 The order parameter carries the story. Writing :math:`Z = r\,e^{i\phi}` for the
 population average of :math:`e^{i\theta}`, the magnitude :math:`r` measures how
 tightly the phases bunch and :math:`\phi` gives the mean phase they bunch

@@ -23,21 +23,61 @@ step drives the agent through ``speed`` such kicks::
     import networkx as nx
     from pyGD import Kuramoto, Yokai
 
-    rng = np.random.default_rng(4)
     G = nx.erdos_renyi_graph(500, 0.02, seed=4)
-    omegas = rng.standard_normal(G.number_of_nodes())
+    omegas = np.random.default_rng(4).standard_normal(G.number_of_nodes())
 
-    env = Kuramoto(sigma=2.0, G=G, omegas=omegas, rng=rng)
-    yok = Yokai(strength=0.5, beta=0.16, env=env, rng=rng)
+    env = Kuramoto(sigma=0.5, G=G, omegas=omegas, rng=np.random.default_rng(0))
+    yok = Yokai(strength=0.5, beta=0.16, env=env, rng=np.random.default_rng(1))
 
     for _ in range(600):
         yok.evolve(env)      # the agent kicks and hops
         env.evolve()         # the oscillators relax back toward each other
     env.update_order_parameter()
-    print(env.r)
+    print(env.r)             # 0.024 against 0.954 without the agent
 
 The order of the two calls is the whole contest: the agent scatters phases, the
-coupling gathers them, and ``r`` settles wherever the two forces balance.
+coupling gathers them, and ``r`` settles wherever the two forces balance. Drop
+the ``yok.evolve(env)`` line and the same environment locks at ``r = 0.954``,
+so at this coupling the agent is winning the contest outright.
+
+Where the agent has authority
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+That balance is a real contest, not a foregone conclusion. The agent injects
+phase at a rate set by ``strength * speed / dt``; the coupling pulls back at a
+rate set by ``sigma`` times the mean degree. Raise ``sigma`` at fixed agent
+settings and the agent loses its grip — on the graph above, with
+``strength=0.5, beta=0.16``:
+
+.. list-table::
+   :header-rows: 1
+
+   * - ``sigma``
+     - agent-free ``r``
+     - with agent ``r``
+   * - 0.3
+     - 0.832
+     - 0.034
+   * - 0.5
+     - 0.949
+     - 0.050
+   * - 0.8
+     - 0.982
+     - 0.631
+   * - 1.0
+     - 0.989
+     - 0.948
+   * - 1.5
+     - 0.994
+     - 0.980
+
+By ``sigma = 1.5`` a single agent kicking one node at a time simply cannot
+keep up with 500 oscillators pulling on each other, and the effect shrinks into
+the run-to-run scatter. If you want a visible effect at higher coupling, raise
+``beta`` (more hops per step) rather than expecting the default agent to scale.
+Note also that the explicit Euler step stops being faithful before ``sigma``
+gets very large — see :doc:`guide_dynamics` — so a high-``sigma`` run can
+mislead you twice over.
 
 Strength and speed enter together
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -49,9 +89,8 @@ a strong, slow one behave identically as long as the product
 :math:`\alpha\beta` matches. You can watch the two collapse onto each other::
 
     def final_r(strength, beta, seed=0):
-        rng = np.random.default_rng(seed)
-        env = Kuramoto(2.0, G, omegas, rng=rng)
-        yok = Yokai(strength, beta, env, rng=rng)
+        env = Kuramoto(0.5, G, omegas, rng=np.random.default_rng(seed))
+        yok = Yokai(strength, beta, env, rng=np.random.default_rng(seed + 1))
         for _ in range(600):
             yok.evolve(env)
             env.evolve()
@@ -59,13 +98,16 @@ a strong, slow one behave identically as long as the product
         return env.r
 
     # same product alpha*beta = 0.08, different factors
-    print(final_r(0.5, 0.16))
-    print(final_r(0.8, 0.10))
+    print(final_r(0.5, 0.16))   # 0.024
+    print(final_r(0.8, 0.10))   # 0.035
 
-The two lines should land close together, and both should sit below the
-agent-free order parameter. That single product is exactly the ``ab`` you hand
-to :class:`~pyGD.dynamics.KuramotoCG` — the coarse-grained dynamics remembers
-the agent only through it.
+Both land near 0.02–0.04, far below the agent-free 0.954, and much closer to
+each other than either is to the agent-free value. That single product is
+exactly the ``ab`` you hand to :class:`~pyGD.dynamics.KuramotoCG` — the
+coarse-grained dynamics remembers the agent only through it. Run the
+comparison at a coupling where the agent still has authority: once ``sigma`` is
+high enough that neither agent moves ``r``, the two numbers agree only because
+both are doing nothing.
 
 Blinding the sensor
 ^^^^^^^^^^^^^^^^^^^
@@ -75,10 +117,15 @@ are worth by corrupting them. The ``noise`` parameter (:math:`\eta`, from 0 to
 1) blurs the agent's read of the local mean field; at :math:`\eta = 1` it kicks
 blind::
 
-    env = Kuramoto(2.0, G, omegas, rng=np.random.default_rng(5))
+    env = Kuramoto(0.5, G, omegas, rng=np.random.default_rng(5))
     yok = Yokai(0.5, 0.16, env, noise=0.5, rng=np.random.default_rng(6))
 
 Sweep ``noise`` from 0 to 1 and measure how much desynchronization survives.
+Averaged over a few seeds on the graph above, ``r`` runs roughly 0.07, 0.03,
+0.49, 0.87, 0.91 as :math:`\eta` takes 0, 0.25, 0.5, 0.75, 1. The agent keeps
+its grip while its measurement is roughly right, then loses it entirely once
+the read is worthless — and the kicks never changed size, only their aim.
+
 Whether the agent's information is worth anything — whether corrupting it costs
 the agent its grip — turns out to depend on the graph, and that dependence is
 the paper's central result. The theory page states it; the paper proves
