@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyGD"
+version = "0.1.0"
+description = "Kuramoto graph dynamics and the Yokai desynchronizing agent"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Damian R. Sowinski" }]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+# networkx 2.7 introduced ``to_scipy_sparse_array``, which builds a
+# ``scipy.sparse.coo_array`` -- new in scipy 1.8. ``np.random.default_rng`` is
+# numpy 1.17.
+dependencies = [
+    "numpy>=1.17",
+    "scipy>=1.8",
+    "networkx>=2.7",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+docs = ["sphinx", "sphinx-rtd-theme", "sphinxcontrib-bibtex"]
+test = ["pytest"]
+
+# The repository root *is* the ``pyGD`` package: ``__init__.py``, ``dynamics.py``
+# and ``agents.py`` sit at the top level rather than in a package directory.
+[tool.setuptools]
+packages = ["pyGD"]
+
+[tool.setuptools.package-dir]
+pyGD = "."

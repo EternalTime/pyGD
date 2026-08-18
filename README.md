@@ -25,11 +25,14 @@ git clone https://github.com/EternalTime/pyGD.git
 cd pyGD
 python3 -m venv .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip
 pip install -e .
 ```
 
 Requires Python 3.8+; numpy, scipy, networkx, and matplotlib are installed
-automatically.
+automatically. The authoritative install instructions are the
+[Getting Started](https://damiansowinski.com/pyGD/getting_started.html) page of
+the hosted documentation.
 
 ## Quick start
 
@@ -75,17 +78,22 @@ the agent doing its work.
 
 The documentation is hosted at
 [damiansowinski.com/pyGD](https://damiansowinski.com/pyGD/); the guides cover
-getting started, the dynamics, and the Yokai agent. To build locally:
+getting started, the dynamics, and the Yokai agent. To build locally, from the
+clone with the virtual environment active:
 
 ```
+source .venv/bin/activate
 pip install -e ".[docs]"
 sphinx-build -b html docs docs/_build/html
 ```
 
 ## Tests
 
+From the clone with the virtual environment active:
+
 ```
-pip install pytest
+source .venv/bin/activate
+pip install -e ".[test]"
 pytest
 ```
 
