@@ -19,7 +19,7 @@ extensions = [
     "sphinx_copybutton",
 ]
 
-copybutton_prompt_text = r">>> "
+copybutton_prompt_text = r">>> |\.\.\. "
 copybutton_prompt_is_regexp = True
 
 # Citations render as footnotes at the bottom of each page (footcite /
