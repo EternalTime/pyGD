@@ -2,8 +2,8 @@ The Model
 =========
 
 This page is a compact reference for the equations pyGD integrates. The full
-development — the information-theoretic reading, the viability measure, and the
-semantic threshold — is in Sowinski, Frank & Ghoshal, *Phys. Rev. Research*
+development - the information-theoretic reading, the viability measure, and the
+semantic threshold - is in Sowinski, Frank & Ghoshal, *Phys. Rev. Research*
 **6**, 043188 (2024)\ :footcite:`sowinski2024information`.
 
 The environment
@@ -29,7 +29,7 @@ Synchronization is read off the global order parameter
 
    Z = r\,e^{i\phi} = \frac{1}{N}\sum_j e^{i\theta_j},
 
-whose magnitude :math:`r` measures phase coherence — near 0 for scattered
+whose magnitude :math:`r` measures phase coherence: near 0 for scattered
 phases, near 1 for a locked population. Above a critical coupling
 :math:`\sigma_c` an extensive fraction of the oscillators locks and :math:`r`
 becomes nonzero\ :footcite:`strogatz2000`.
@@ -70,9 +70,9 @@ that hubs fluctuate more than leaves. This is what
 :class:`~pyGD.dynamics.KuramotoCG` integrates, with ``ab`` :math:`= \alpha\beta`.
 
 The continuum model reproduces the agent-based order parameter closely but not
-exactly — it slightly underestimates the synchronization — and pyGD keeps the
-two as independent classes for that reason. The derivation of the drift and
-diffusion coefficients is given in Appendix B of the paper.
+exactly - it slightly underestimates the synchronization - and pyGD keeps the
+two as independent classes for that reason. Appendix B of the paper derives the
+drift and diffusion coefficients.
 
 References
 ^^^^^^^^^^

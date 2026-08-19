@@ -4,23 +4,22 @@ pyGD
 pyGD runs the Kuramoto model of coupled phase oscillators and lets you
 interfere with it. The oscillators live on the nodes of a graph, each pulled
 toward the phases of its neighbors; turn up the coupling and they synchronize.
-On top of them lives an agent — the *Yokai* — that hops from node to node,
-reads the local mean field, and kicks each phase it visits in the direction
-that opposes synchrony.
+On top of them lives an agent - the *Yokai* - that hops from node to node,
+reads the local mean field, and kicks each phase it visits against the
+alignment it finds there.
 
-The library ships two dynamics and one agent. :class:`~pyGD.dynamics.Kuramoto`
-is the oscillator environment; :class:`~pyGD.agents.Yokai` is the agent that
-drives it out of step; :class:`~pyGD.dynamics.KuramotoCG` is the coarse-grained
-continuum limit, the stochastic dynamics you reach when the agent is integrated
-out. Graphs come from :mod:`networkx`; the dynamics only ever see the sparse
-adjacency matrix, so any graph networkx can build is a graph pyGD can run.
+:class:`~pyGD.dynamics.Kuramoto` is the environment;
+:class:`~pyGD.agents.Yokai` is the agent that drives it out of step;
+:class:`~pyGD.dynamics.KuramotoCG` is the continuum limit you reach when the
+agent is integrated out. Graphs come from :mod:`networkx`, and the dynamics
+only ever see the sparse adjacency matrix. The library ports a set of MATLAB
+classes, whose interface it keeps.
 
 The model and the information-theoretic reading of the agent are in Sowinski,
-Frank & Ghoshal, *Phys. Rev. Research* **6**, 043188
-(2024)\ :footcite:`sowinski2024information`. If you're new here, start with :doc:`getting_started`, take the
-model for a spin in the :doc:`applet`, then work through whichever guide
-matches your problem. The library ports a set of
-MATLAB classes, whose interface it keeps.
+Frank & Ghoshal, *Phys. Rev. Research* **6**,
+043188 (2024)\ :footcite:`sowinski2024information`. Start with
+:doc:`getting_started`, take the model for a spin in the :doc:`applet`, then
+read whichever guide matches your problem.
 
 Guide
 ^^^^^

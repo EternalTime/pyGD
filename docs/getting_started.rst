@@ -1,15 +1,13 @@
 Getting Started
 ===============
 
-In this guide you will install pyGD and watch a network of oscillators
-synchronize. The library rests on numpy, scipy, networkx, and matplotlib —
-nothing exotic — so the install is quick.
+Here you install pyGD and watch a network of oscillators synchronize.
 
 Installation
 ^^^^^^^^^^^^
 
-pyGD requires Python 3.8 or newer. Clone the repository and install it into a
-virtual environment::
+pyGD requires Python 3.8 or newer, and rests on numpy, scipy, networkx, and
+matplotlib. Clone the repository and install it into a virtual environment::
 
     git clone https://github.com/EternalTime/pyGD.git
     cd pyGD
@@ -18,16 +16,16 @@ virtual environment::
     python -m pip install --upgrade pip
     pip install -e .
 
-The ``-e`` flag installs in editable mode — changes you make to the source are
-picked up immediately. Check the install::
+The ``-e`` flag installs in editable mode, so changes to the source are picked
+up immediately. Check it::
 
     >>> import pyGD
 
 Your first synchronization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Build an Erdős–Rényi graph, place an oscillator on every node with a random
-natural frequency, and let the coupling pull them together::
+Put an oscillator with a random natural frequency on every node of an
+Erdős–Rényi graph and let the coupling pull them together::
 
     import numpy as np
     import networkx as nx
@@ -43,17 +41,17 @@ natural frequency, and let the coupling pull them together::
     print(r_history[-1])   # order parameter after 600 steps
 
 The order parameter ``r`` runs from 0, a scatter of phases pointing every which
-way, to 1, a single spike of oscillators all aligned. With the coupling set
-well above threshold, the tail of ``r_history`` should sit close to 1. Watch
-the alignment directly by coloring the nodes with their phases::
+way, to 1, a single spike of oscillators all aligned. With the coupling this
+far above threshold, the tail of ``r_history`` should sit close to 1. Color the
+nodes by their phases and watch the alignment directly::
 
     import matplotlib.pyplot as plt
 
     env.plot_phases()
     plt.show()
 
-Now introduce the agent. The Yokai hops across the same graph and fights the
-synchronization the coupling is trying to build::
+Now introduce the agent, which hops the same graph and fights the
+synchronization the coupling is building::
 
     from pyGD import Yokai
 
@@ -66,7 +64,6 @@ synchronization the coupling is trying to build::
     env.update_order_parameter()
     print(env.r)            # lower than the agent-free run above
 
-Run both to the same coupling and compare the two values of ``r`` — the gap is
-the agent doing its work. How that gap behaves as you sweep the coupling, and
-what it costs the agent to sustain it, is the subject of :doc:`guide_yokai`.
-First, though, meet the dynamics the agent acts on in :doc:`guide_dynamics`.
+The gap between the two values of ``r`` is the agent doing its work. How it
+behaves as you sweep the coupling is the subject of :doc:`guide_yokai`; first
+meet the dynamics the agent acts on in :doc:`guide_dynamics`.
