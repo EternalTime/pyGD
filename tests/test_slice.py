@@ -87,7 +87,7 @@ def test_kuramotocg_statistical_monotone():
     assert high > low
 
 
-# The regime the README quick start and docs/guide_yokai.rst advertise.
+# The regime the README quick start and docs/guide_yokai.ipynb advertise.
 DOC_SIGMA = 0.5
 DOC_STRENGTH = 0.5
 DOC_BETA = 0.16

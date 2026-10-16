@@ -80,14 +80,7 @@ before trusting a high-`sigma` run.
 
 ## Documentation
 
-Hosted at [damiansowinski.com/pyGD](https://damiansowinski.com/pyGD/). To build
-it locally, with the virtual environment active:
-
-```
-source .venv/bin/activate
-pip install -e ".[docs]"
-sphinx-build -b html docs docs/_build/html
-```
+Hosted at [damiansowinski.com/pyGD](https://damiansowinski.com/pyGD/).
 
 ## Tests
 
