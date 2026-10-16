@@ -31,7 +31,13 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-docs = ["sphinx", "sphinx-rtd-theme", "sphinxcontrib-bibtex", "sphinx-copybutton"]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-bibtex",
+    "sphinx-copybutton",
+    "myst-nb",
+]
 test = ["pytest"]
 
 # The repository root *is* the ``pyGD`` package: ``__init__.py``, ``dynamics.py``
