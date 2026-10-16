@@ -80,18 +80,7 @@ before trusting a high-`sigma` run.
 
 ## Documentation
 
-Hosted at [damiansowinski.com/pyGD](https://damiansowinski.com/pyGD/). To build
-it locally, with the virtual environment active:
-
-```
-source .venv/bin/activate
-pip install -e ".[docs]"
-sphinx-build -b html docs docs/_build/html
-```
-
-The guides in `docs/` are Jupyter notebooks, and the build runs every one of
-them so that the outputs on the page come from the current code. That takes
-about ten seconds.
+Hosted at [damiansowinski.com/pyGD](https://damiansowinski.com/pyGD/).
 
 ## Tests
 
