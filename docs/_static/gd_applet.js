@@ -1,4 +1,4 @@
-/* Graph dynamics — interactive applet for the pyGD documentation.
+/* Graph dynamics - interactive applet for the pyGD documentation.
  *
  * The dynamics are a direct port of the library: envStep mirrors
  * dynamics.Kuramoto.evolve (and, in coarse-grained mode,
@@ -22,10 +22,10 @@
     /* Palette from custom.css: Crimson #8B0037, LightGray #E6E6E6, Black.
      * The slate blue is the one off-palette hue: a cyclic phase map needs a
      * second color or +pi/2 and -pi/2 become indistinguishable. */
-    const GRAY = [230, 230, 230];   // #E6E6E6 — theta = 0
-    const CRIMSON = [139, 0, 55];   // #8B0037 — theta = +pi/2
-    const DUSK = [32, 30, 38];      // near-black — theta = pi (never invisible)
-    const SLATE = [0, 84, 139];     // #00548B — theta = -pi/2
+    const GRAY = [230, 230, 230];   // #E6E6E6 - theta = 0
+    const CRIMSON = [139, 0, 55];   // #8B0037 - theta = +pi/2
+    const DUSK = [32, 30, 38];      // near-black - theta = pi (never invisible)
+    const SLATE = [0, 84, 139];     // #00548B - theta = -pi/2
     const ROSE = '#C25E7E';         // lightened crimson for accents on black
 
     /* Twilight-style cyclic map: 256 colors around the wheel through the
@@ -80,7 +80,7 @@
     }
 
     /* Fruchterman-Reingold spring layout, computed once at boot and then
-     * frozen — the JS analogue of plot_phases' spring_layout. Returns
+     * frozen - the JS analogue of plot_phases' spring_layout. Returns
      * positions normalized to the unit square at equal scale. */
     function springLayout(adj, iters) {
         const n = adj.length;
@@ -244,7 +244,7 @@
     }
 
     /* Yokai.evolve: `speed` measure-kick-hop sub-steps, mutating the
-     * phases in place, sequentially — exactly the Python loop. */
+     * phases in place, sequentially - exactly the Python loop. */
     function yokaiStep() {
         for (let s = 0; s < yokSpeed; s++) {
             const nb = adj[yokLoc];
@@ -284,7 +284,7 @@
         phiNow = Math.atan2(im, re);
     }
 
-    /* Agent first, then environment — the order of the library's own
+    /* Agent first, then environment - the order of the library's own
      * driving loop (yok.evolve(env); env.evolve()). */
     function step() {
         if (P.mode === 'yokai') yokaiStep();
@@ -370,8 +370,8 @@
     }
 
     /* Rose plot: the phase histogram as wedges on the unit circle, each
-     * filled with its bin's wheel color — the plot doubles as the colormap
-     * legend — with the order parameter Z drawn as an arrow of length r. */
+     * filled with its bin's wheel color - the plot doubles as the colormap
+     * legend - with the order parameter Z drawn as an arrow of length r. */
     function drawRose(cv) {
         const c = cv.getContext('2d');
         const W = cv.width, H = cv.height;
@@ -434,9 +434,9 @@
       <div id="gd-head">
         <span class="gd-title">pyGD</span>
         <select id="gd-mode">
-          <option value="bare">Kuramoto — bare environment</option>
+          <option value="bare">Kuramoto - bare environment</option>
           <option value="yokai">Kuramoto + Yokai</option>
-          <option value="cg">KuramotoCG — coarse-grained</option>
+          <option value="cg">KuramotoCG - coarse-grained</option>
         </select>
         <button class="gd-hbtn" id="gd-reset">Reset</button>
         <button class="gd-hbtn" id="gd-pause">Pause</button>
