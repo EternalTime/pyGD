@@ -47,7 +47,7 @@ omegas = np.random.default_rng(0).standard_normal(G.number_of_nodes())
 env = Kuramoto(sigma=0.5, G=G, omegas=omegas, rng=np.random.default_rng(1))
 r_history = env.run(600, record=True)
 
-print(r_history[-1])   # 0.9474... — order parameter after 600 steps
+print(r_history[-1])   # 0.9474... - order parameter after 600 steps
 ```
 
 The order parameter `r` runs from 0, phases scattered every which way, to 1,
@@ -64,7 +64,7 @@ for _ in range(600):
     yok.evolve(env)
     env.evolve()
 env.update_order_parameter()
-print(env.r)            # 0.0457... — the agent holds the phases apart
+print(env.r)            # 0.0457... - the agent holds the phases apart
 ```
 
 Both runs seed the environment with `default_rng(1)`, so they differ only by
