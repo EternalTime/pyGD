@@ -5,7 +5,7 @@ Three kinds of check:
 1. Exact single-step (Kuramoto, and Kuramoto+Yokai): recompute the MATLAB
    update independently and assert machine-precision agreement.
 2. Statistical (KuramotoCG): the order parameter r rises with coupling sigma
-   across a small ensemble -- a coarse sanity check in the spirit of Fig. 5,
+   across a small ensemble, a coarse sanity check in the spirit of Fig. 5,
    not a bit-for-bit match (the SDE is only an approximate continuum limit).
 3. Documentation claims: the README and guide promise the Yokai drives r down
    in a specific regime, and that the explicit Euler step is faithful there.
