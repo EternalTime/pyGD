@@ -4,7 +4,7 @@
     The mobile feedback-control agent of Sowinski, Frank & Ghoshal, PRR 6,
     043188 (2024). It hops node-to-node on the graph, estimates the local mean
     field at each node it visits, and kicks that oscillator's phase to oppose
-    local synchrony -- a Maxwell's-demon-style desynchronizer. Ported from
+    local synchrony: a Maxwell's-demon-style desynchronizer. Ported from
     ``Yokai.m``; ``evolve`` mutates the passed environment in place, matching
     the MATLAB handle-class semantics.
 """
