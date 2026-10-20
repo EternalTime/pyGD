@@ -163,7 +163,7 @@ class Kuramoto:
             vmin=-np.pi, vmax=np.pi, node_size=40,
         )
         ax.set_axis_off()
-        ax.set_title(f"r = {self.r:.3f}")
+        ax.set_title(f"$r = {self.r:.3f}$")
         return ax
 
 
